@@ -20,8 +20,8 @@ FoodItem.prototype.toString = function() {
         + this.glutenFree + " "
         + this.citrusFree;
 };
-
-FoodItem.prototype.Display = function() {
+// FoodItem.Render creates and appends the objects to the dom
+FoodItem.prototype.render = function() {
    
     var ingredients = this.name + ":    " + 
             ' calories: ' + this.calories;
@@ -35,23 +35,10 @@ FoodItem.prototype.Display = function() {
     if(this.citrusFree){
         dietary += " citrus free ";
     }
-            
-            
-    this.$el = $('<div>')
-    .addClass('ingredients');
-    return this.$el.append(ingredients).append(dietary);
 
+    $(".menu").append(ingredients).append(dietary + "<br>");
         
 };
-// var cheeseBurger = new FoodItem("cheeseburger", 500, false, false, true);
-// console.log(cheeseBurger.toString());
-
-
-// var fruitSalad = new FoodItem("fruit salad", 300, true, true, false);
-// console.log(fruitSalad.toString());
-
-// var hummus = new FoodItem("hummus", 150, true, true, true);
-// console.log(hummus.toString());
 
 //=================================================
 // Drink class
@@ -77,19 +64,33 @@ Drink.prototype.toString = function() {
         + this.price + " "  
         + stringIngredients;
 };
- 
-// drink: rum coke
+ //Drink.Render creates dom elements and appends them to the Menu
+Drink.prototype.render = function() {
+   
+    var drink = this.name + ":    "
+            + this.description + " $"
+            + this.price + "<br/>";            
+    
+    // give drink name, price, description
+    $(".menu")
+        .append('<div class="drinks">' + drink);    
+    // give ingredients: calories, ...
+    for(var i = 0; i < this.ingredients.length; i++) {
+        this.ingredients[i].render();       
+    }
+
+};
+
+//Instances of FoodItems to be used to create Instances of Drinks
 var rum = new FoodItem("rum", 200, false, false, false);
 var tequila = new FoodItem("tequila", 70, true, true, false);
 var coke = new FoodItem("coke", 200, false, false, false);
 var margaritaMix = new FoodItem("Margarita Mix", 300, true, true, false);
-var rumCoke = new Drink("rumCoke", "rum+coke", 3, [rum, coke]);
 
+
+//Instances of Drinks
+var rumCoke = new Drink("rum coke", "rum+coke", 3, [rum, coke]);
 var margarita = new Drink("Margarita", "citrus Margarita", 7, [tequila, margaritaMix]);
-//console.log(margarita.toString());
-
-
-//console.log(rumCoke.toString());
 
 //=================================================
 // Plate class
@@ -152,23 +153,29 @@ Plate.prototype.isCitrusFree = function () {
     }
     return true;
 };
+ //Plate.Render creates dom elements and appends them to the Menu
+Plate.prototype.render = function() {
+   
+    var plate = this.name + ":    "
+            + this.description + " $"
+            + this.price + "<br/>";            
+    
+    $(".menu")
+        .append('<div class="plates">' + plate);    
+    for(var i = 0; i < this.ingredients.length; i++) {
+        this.ingredients[i].render();       
+    }
+};
 
-// burrito
+//Instances of FoodItem to be used for Plate
 var bean = new FoodItem("bean", 200, true, false, true);
 var tortilla = new FoodItem("tortilla", 100, true, false, true);
 var cheese = new FoodItem("cheese", 50, false, false, true);
-var burrito = new Plate("burrito", "the best burrito", 7, [bean, tortilla, cheese]);
-
-// guacamole
 var avocado = new FoodItem("avocado", 100, true, true, true);
 var tomato = new FoodItem('tomato', 20, true,true,true);
+//Instances of Plate
 var guacamole = new Plate("guacamole", "the best guacamole", 5, [avocado, tomato]);
-
-//console.log(burrito.toString());
-//console.log(burrito.isVegan());
-//console.log(guacamole.isVegan());
-//console.log(guacamole.isGlutenFree());
-
+var burrito = new Plate("burrito", "the best burrito", 7, [bean, tortilla, cheese]);
 
 //=================================================
 // Order class
@@ -193,7 +200,7 @@ var Menu = function(food) {
 Menu.prototype = new Plate();
 Menu.prototype.constructor = Menu;
 
-var cjsionsmenu = new Menu([rumCoke, margarita, burrito, guacamole]);
+var cjSionsMenu = new Menu([rumCoke, margarita, burrito, guacamole]);
 //console.log(cjsionsmenu.toString());
 
 
@@ -206,29 +213,23 @@ var Restaurant = function(name, description, menu) {
     this.menu = menu;
 };
 
-var cjsioncantina = new Restaurant("cj sion cantina", "the best restaurant", cjsionsmenu);
-//console.log(cjsioncantina)
+var cjSionCantina = new Restaurant("cj sion cantina", "the best restaurant", cjSionsMenu);
 
 //this prints all of the details of our menu
 Restaurant.prototype.toString = function() {
-    for (var i = 0; i< cjsionsmenu.food.length; i++){
-        console.log(cjsionsmenu.food[i].name);
-        console.log(cjsionsmenu.food[i].description);
-        console.log(cjsionsmenu.food[i].price);
-        for(var j = 0; j < cjsionsmenu.food[i].ingredients.length; j++ ){
-             console.log(cjsionsmenu.food[i].ingredients[j].name);
-             console.log(cjsionsmenu.food[i].ingredients[j].calories);
-             console.log(cjsionsmenu.food[i].ingredients[j].vegan);
-             console.log(cjsionsmenu.food[i].ingredients[j].glutenFree);
-             console.log(cjsionsmenu.food[i].ingredients[j].citrusFree);
-        };
-
-    };
-
-
+    for (var i = 0; i< cjSionsMenu.food.length; i++){
+        console.log(cjSionsMenu.food[i].name);
+        console.log(cjSionsMenu.food[i].description);
+        console.log(cjSionsMenu.food[i].price);
+        for(var j = 0; j < cjSionsMenu.food[i].ingredients.length; j++ ){
+             console.log(cjSionsMenu.food[i].ingredients[j].name);
+             console.log(cjSionsMenu.food[i].ingredients[j].calories);
+             console.log(cjSionsMenu.food[i].ingredients[j].vegan);
+             console.log(cjSionsMenu.food[i].ingredients[j].glutenFree);
+             console.log(cjSionsMenu.food[i].ingredients[j].citrusFree);
+        }
+    }
 };
-//console.log(cjsionsmenu.food.length)
-cjsioncantina.toString();
 
 //=================================================
 // Customer class
@@ -237,9 +238,22 @@ var Customer = function(dietaryPreference) {
     this.dietaryPreference = dietaryPreference;
 };
 
-$(document).on('ready', function(){
-$(".menu").append(tomato.Display());
+$(document).on('ready', function() {
 
+for (var i=0; i< cjSionsMenu.food.length; i++) {
+    $(".menu").append(cjSionsMenu.food[i].render());
+    }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
