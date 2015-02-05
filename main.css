@@ -3,19 +3,19 @@
 	padding: 0;
 }
 body{
-	background-color: #e2e4df;
+	background-color: #E4DD91;
 
 
 }
 h1{
-border-bottom: solid 3px;
+	border-bottom: solid 3px;
 
 }
 
 .bigContainer{
 	margin: auto;
 	width: 85%;
-	height: 500px;
+	padding-bottom: 5%;
 	background-color: #e49232;
 }
 
@@ -27,6 +27,17 @@ border-bottom: solid 3px;
 }
 
 .drinks, .plates{
-	border-top: solid 3px;
+	
+	padding-bottom: 15px;
+	font-weight: bold;
+	margin-top: 10px;
+	font-size: 18px;
+}
 
+.menu{
+	text-align: center;
+	border: solid 2px;
+	border-color: #A12523;
+	width: 85%;
+	margin-left: 8%;
 }

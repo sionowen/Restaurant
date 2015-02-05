@@ -114,7 +114,7 @@ Plate.prototype.toString = function() {
         + this.description + " "
         + this.price + " "  
         + stringIngredients;
-}
+};
 
 // Plate isVegan() method
 // Check whether the plate is vegan or not
